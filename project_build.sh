@@ -102,10 +102,9 @@ push_changes() {
 echo "Select an option:"
 echo "1. Clean and Compile"
 echo "2. Compile only"
-echo "3. Delete build directory before commit"
-echo "4. Commit and Push changes"
-echo "5. Exit"
-read -p "Enter your choice (1/2/3/4/5): " choice
+echo "3. Commit and Push changes"
+echo "4. Exit"
+read -p "Enter your choice (1/2/3/4): " choice
 
 # Handle user input
 case $choice in
@@ -117,18 +116,11 @@ case $choice in
         compile_project
         ;;
     3)
-        # Ask if user wants to delete the build directory before committing
-        read -p "Do you want to delete the build directory before committing? (y/n): " delete_choice
-        if [ "$delete_choice" == "y" ]; then
-            delete_build_dir
-        fi
-        commit_changes
-        ;;
-    4)
+        delete_build_dir
         commit_changes
         push_changes
         ;;
-    5)
+    4)
         echo "Exiting."
         exit 0
         ;;
