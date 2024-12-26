@@ -5,10 +5,15 @@ PROJECT_DIR=$(pwd)
 BUILD_DIR="${PROJECT_DIR}/build"
 EXE_DIR="${PROJECT_DIR}/exe"
 
+# Git credentials
+GIT_USERNAME="nandi691"
+GIT_TOKEN=$(cat ~/token)
+GIT_REPO="WebSocket"
+
 # Function to clean the build directory
 clean_build() {
     echo "Cleaning build directory..."
-    rm -rf $BUILD_DIR
+    rm -rf "$BUILD_DIR/*"
     echo "Build directory cleaned."
 
     echo "Cleaning exe directory..."
@@ -19,7 +24,7 @@ clean_build() {
 # Function to delete the build directory entirely
 delete_build_dir() {
     echo "Deleting the build directory..."
-    rm -rf $BUILD_DIR
+    rm -rf "$BUILD_DIR"
     echo "Build directory deleted."
 }
 
@@ -76,13 +81,31 @@ commit_changes() {
     fi
 }
 
+# Function to push changes to GitHub
+push_changes() {
+    echo "Pushing changes to GitHub..."
+
+    # Use GitHub credentials (username and token) to push changes
+    git remote set-url origin https://$GIT_USERNAME:$GIT_TOKEN@github.com/$GIT_USERNAME/$GIT_REPO.git
+    git push -u origin main
+
+    # Check if push was successful
+    if [ $? -eq 0 ]; then
+        echo "Push successful!"
+    else
+        echo "Push failed."
+        exit 1
+    fi
+}
+
 # Display options to the user
 echo "Select an option:"
 echo "1. Clean and Compile"
 echo "2. Compile only"
 echo "3. Delete build directory before commit"
-echo "4. Exit"
-read -p "Enter your choice (1/2/3/4): " choice
+echo "4. Commit and Push changes"
+echo "5. Exit"
+read -p "Enter your choice (1/2/3/4/5): " choice
 
 # Handle user input
 case $choice in
@@ -94,7 +117,7 @@ case $choice in
         compile_project
         ;;
     3)
-        # Ask if user wants to delete the build directory before commit
+        # Ask if user wants to delete the build directory before committing
         read -p "Do you want to delete the build directory before committing? (y/n): " delete_choice
         if [ "$delete_choice" == "y" ]; then
             delete_build_dir
@@ -102,6 +125,10 @@ case $choice in
         commit_changes
         ;;
     4)
+        commit_changes
+        push_changes
+        ;;
+    5)
         echo "Exiting."
         exit 0
         ;;
