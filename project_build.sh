@@ -13,7 +13,7 @@ GIT_REPO="WebSocket"
 # Function to clean the build directory
 clean_build() {
     echo "Cleaning build directory..."
-    rm -rf "$BUILD_DIR/*"
+    rm -rf $BUILD_DIR/
     echo "Build directory cleaned."
 
     echo "Cleaning exe directory..."
@@ -24,7 +24,7 @@ clean_build() {
 # Function to delete the build directory entirely
 delete_build_dir() {
     echo "Deleting the build directory..."
-    rm -rf "$BUILD_DIR"
+    rm -rf $BUILD_DIR
     echo "Build directory deleted."
 }
 
